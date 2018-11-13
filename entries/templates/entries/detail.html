@@ -7,7 +7,7 @@
 {% block sidebar %}
   <ul class="well nav nav-list">
     <li><h4>Tags</h4></li>
-    {% for tag in entry.tags|sort(reverse=True, attribute='name') %}
+    {% for tag in entry.tags|sort(attribute='name') %}
       <li><a href="{{ url_for('entries.tag_detail', slug=tag.slug) }}">{{ tag.name }}</a></li>
     {% endfor %}
   </ul>
