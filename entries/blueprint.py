@@ -7,7 +7,7 @@ entries = Blueprint('entries', __name__, template_folder='templates')
 
 @entries.route('/')
 def index():
-    entries = Entry.query.order_by(Entry.created_timestamp.desc())
+    entries = Entry.query.filter(Entry.status == Entry.STATUS_PUBLIC).order_by(Entry.created_timestamp.desc())
     return entry_list('entries/index.html', entries)
 
 
@@ -26,7 +26,8 @@ def tag_detail(slug):
 
 @entries.route('/<slug>/')
 def detail(slug):
-    entry = Entry.query.filter(Entry.slug == slug).first_or_404()
+    entry = Entry.query.filter((Entry.slug == slug) 
+                             & (Entry.status == Entry.STATUS_PUBLIC)).first_or_404()
     return render_template('entries/detail.html', entry=entry)
 
 
