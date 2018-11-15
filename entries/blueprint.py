@@ -20,15 +20,19 @@ def tag_index():
 @entries.route('/tags/<slugs>/')
 def tag_detail(slugs):
     tags_list = []
-    entries = set()
+    entries_ids = set()
     slugs = slugs.split('+')
     for slug in slugs:
         tags_list.append(Tag.query.filter(Tag.slug == slug).first_or_404())
+        
         print(tags_list)
+    for tag in tags_list:
+        entries_ids |= set([entry.id for entry in tag.entries])
+    print(entries_ids)
     tags_names = [tag.name for tag in tags_list]
-    entries = Entry.query.filter(set(tags_names) == set(tags_list))
+    entries = Entry.query.filter(Entry.id.in_(entries_ids))
     print("")
-    print(entries)
+    print(entries.all())
     return object_list('entries/tag_detail.html', entries, tag=tags_list)
 
 
