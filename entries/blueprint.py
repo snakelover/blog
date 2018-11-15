@@ -17,11 +17,19 @@ def tag_index():
     return entry_list('entries/tag_index.html', tags)
 
 
-@entries.route('/tags/<slug>/')
-def tag_detail(slug):
-    tag = Tag.query.filter(Tag.slug == slug).first_or_404()
-    entries = tag.entries.order_by(Entry.created_timestamp.desc())
-    return object_list('entries/tag_detail.html', entries, tag=tag)
+@entries.route('/tags/<slugs>/')
+def tag_detail(slugs):
+    tags_list = []
+    entries = set()
+    slugs = slugs.split('+')
+    for slug in slugs:
+        tags_list.append(Tag.query.filter(Tag.slug == slug).first_or_404())
+        print(tags_list)
+    tags_names = [tag.name for tag in tags_list]
+    entries = Entry.query.filter(set(tags_names) == set(tags_list))
+    print("")
+    print(entries)
+    return object_list('entries/tag_detail.html', entries, tag=tags_list)
 
 
 @entries.route('/<slug>/')
