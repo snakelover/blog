@@ -19,9 +19,20 @@ def tag_index():
 
 @entries.route('/tags/<slug>/')
 def tag_detail(slug):
-    tag = Tag.query.filter(Tag.slug == slug).first_or_404()
-    entries = tag.entries.order_by(Entry.created_timestamp.desc())
-    return object_list('entries/tag_detail.html', entries, tag=tag)
+    tag_list = []
+    entries_ids = set()
+    tags = set(slug.split('+'))
+    tag_entries = []
+    for tag in tags:
+        tag_obj = Tag.query.filter(Tag.slug == tag).first_or_404()
+        tag_list.append(tag_obj)
+        tag_entries.append([entry.id for entry in tag_obj.entries])
+        entries_ids |= set([entry.id for entry in tag_obj.entries])
+    for entries in tag_entries:
+        entries_ids &= set(entries)
+    entries = Entry.query.filter(Entry.id.in_(entries_ids))
+    tag_names = ", ".join(["<{}>".format(tag.name) for tag in tag_list])
+    return object_list('entries/tag_detail.html', entries, tag=tag_names)
 
 
 @entries.route('/<slug>/')
