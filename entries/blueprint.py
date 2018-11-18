@@ -28,13 +28,9 @@ def tag_detail(slug):
         tag_list.append(tag_obj)
         tag_entries.append([entry.id for entry in tag_obj.entries])
         entries_ids |= set([entry.id for entry in tag_obj.entries])
-        print(tag_list)
     for entries in tag_entries:
         entries_ids &= set(entries)
-    print(entries_ids)
     entries = Entry.query.filter(Entry.id.in_(entries_ids))
-    print("")
-    print(entries.all())
     tag_names = ", ".join(["<{}>".format(tag.name) for tag in tag_list])
     return object_list('entries/tag_detail.html', entries, tag=tag_names)
 
