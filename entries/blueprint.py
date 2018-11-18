@@ -17,23 +17,26 @@ def tag_index():
     return entry_list('entries/tag_index.html', tags)
 
 
-@entries.route('/tags/<slugs>/')
-def tag_detail(slugs):
-    tags_list = []
+@entries.route('/tags/<slug>/')
+def tag_detail(slug):
+    tag_list = []
     entries_ids = set()
-    slugs = slugs.split('+')
-    for slug in slugs:
-        tags_list.append(Tag.query.filter(Tag.slug == slug).first_or_404())
-        
-        print(tags_list)
-    for tag in tags_list:
-        entries_ids |= set([entry.id for entry in tag.entries])
+    tags = set(slug.split('+'))
+    tag_entries = []
+    for tag in tags:
+        tag_obj = Tag.query.filter(Tag.slug == tag).first_or_404()
+        tag_list.append(tag_obj)
+        tag_entries.append([entry.id for entry in tag_obj.entries])
+        entries_ids |= set([entry.id for entry in tag_obj.entries])
+        print(tag_list)
+    for entries in tag_entries:
+        entries_ids &= set(entries)
     print(entries_ids)
-    tags_names = [tag.name for tag in tags_list]
     entries = Entry.query.filter(Entry.id.in_(entries_ids))
     print("")
     print(entries.all())
-    return object_list('entries/tag_detail.html', entries, tag=tags_list)
+    tag_names = ", ".join(["<{}>".format(tag.name) for tag in tag_list])
+    return object_list('entries/tag_detail.html', entries, tag=tag_names)
 
 
 @entries.route('/<slug>/')

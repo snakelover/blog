@@ -2,12 +2,4 @@
 
 {% block title %}{{ tag }} entries{% endblock %}
 
-{% block content_title %}
-  {{ tag.name }} entries
-  <ul>
-    {% for t in tag %}
-        <li>{{ t.name }}</li>
-    {% endfor %}
-    </ul>
-
-{% endblock %}
+{% block content_title %}{{ tag }} entries{% endblock %}
