@@ -3,18 +3,10 @@
 {% block content_title %}Welcome to my blog{% endblock %}
 
 {% block content %}
-  {% if number %}
-    <p>Your number is {{ number|int }}</p>
-    <ul>
-      {% for i in range(number|int) %}
-        {% if i is divisibleby 2 %}
-          <li>{{ i }}</li>
-        {% endif %}
-      {% endfor %}
-    </ul>
+  {% if name %}
+    <p>Hello, {{ name }}!</p>
   {% else %}
-    <p>No number specified.</p>
+    <p>Hello! You are an anonymous guest rigth now!</p>
+    <p>If you want to be greeted by your name then specify your name in the request argument 'name'!</p>
   {% endif %}
-
-  <p>Your name is {{ name|default('<unknown>', True) }}.</p>
 {% endblock %}
