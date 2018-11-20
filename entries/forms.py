@@ -1,10 +1,16 @@
 import wtforms
+from wtforms.validators import DataRequired
 
 from models import Entry
 
+
 class EntryForm(wtforms.Form):
-    title = wtforms.StringField('Title')
-    body = wtforms.TextAreaField('Body')
+    title = wtforms.StringField(
+        'Title',
+        validators=[DataRequired()])
+    body = wtforms.TextAreaField(
+        'Body',
+        validators=[DataRequired()])
     status = wtforms.SelectField(
         'Entry status',
         choices=(
