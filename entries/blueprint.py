@@ -1,8 +1,9 @@
-from flask import Blueprint, redirect, render_template, request, url_for
+from flask import Blueprint, flash, redirect, render_template, request, url_for
 from helpers import object_list
 from models import Entry, Tag
 from entries.forms import EntryForm
 from app import db
+
 
 entries = Blueprint('entries', __name__, template_folder='templates')
 
@@ -23,9 +24,9 @@ def tag_index():
 def tag_detail(slug):
     tag_list = []
     entries_ids = set()
-    tags = set(slug.split('+'))
     tag_entries = []
-    for tag in tags:
+    raw_tags = set([tag.strip() for tag in slug.split('+') if tag.strip()])
+    for tag in raw_tags:
         tag_obj = Tag.query.filter(Tag.slug == tag).first_or_404()
         tag_list.append(tag_obj)
         tag_entries.append([entry.id for entry in tag_obj.entries])
@@ -33,7 +34,7 @@ def tag_detail(slug):
     for entries in tag_entries:
         entries_ids &= set(entries)
     entries = Entry.query.filter(Entry.id.in_(entries_ids))
-    tag_names = ", ".join(["<{}>".format(tag.name) for tag in tag_list])
+    tag_names = " + ".join(["{}".format(tag.name) for tag in tag_list])
     return object_list('entries/tag_detail.html', entries, tag=tag_names)
 
 
@@ -45,6 +46,7 @@ def create():
             entry = form.save_entry(Entry())
             db.session.add(entry)
             db.session.commit()
+            flash('Entry "%s" created successfully.' % entry.title, 'success')
             return redirect(url_for('entries.detail', slug=entry.slug))
     else:
         form = EntryForm()
@@ -67,6 +69,7 @@ def edit(slug):
             entry = form.save_entry(entry)
             db.session.add(entry)
             db.session.commit()
+            flash('Entry "%s" has been saved.' % entry.title, 'success')
             return redirect(url_for('entries.detail', slug=entry.slug))
     else:
         form = EntryForm(obj=entry)
@@ -81,6 +84,7 @@ def delete(slug):
         entry.status = Entry.STATUS_DELETED
         db.session.add(entry)
         db.session.commit()
+        flash('Entry "%s" has been deleted.' % entry.title, 'success')
         return redirect(url_for('entries.index'))
 
     return render_template('entries/delete.html', entry=entry)
