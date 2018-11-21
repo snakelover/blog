@@ -3,6 +3,10 @@ from wtforms.validators import DataRequired
 from models import Entry, Tag
 
 
+class ImageForm(wtforms.Form):
+    file = wtforms.FileField('Image file')
+
+
 class TagField(wtforms.StringField):
     def _value(self):
         if self.data:
