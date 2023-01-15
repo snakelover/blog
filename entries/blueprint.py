@@ -1,7 +1,7 @@
 import os
 
 from flask import Blueprint, flash, redirect, render_template, request, url_for
-from werkzeug import secure_filename
+from werkzeug.utils import secure_filename
 
 from app import app, db
 from helpers import object_list
