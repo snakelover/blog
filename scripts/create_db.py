@@ -1,7 +1,9 @@
 import os
 import sys
 sys.path.append(os.getcwd())
-from main import db  # noqa
+# print(sys.path)
+from main import app, db  # noqa
 
 if __name__ == '__main__':
-    db.create_all()
+    with app.app_context():
+        db.create_all()

@@ -1,0 +1,16 @@
+alembic==1.7.3
+click==8.0.1
+colorama==0.4.4
+Flask==2.2.2
+Flask-Migrate==2.6.0
+Flask-SQLAlchemy==3.0.2
+greenlet==2.0.1
+importlib-metadata==6.0.0
+itsdangerous==2.0.1
+Jinja2==3.0.1
+Mako==1.1.5
+MarkupSafe==2.1.1
+SQLAlchemy==1.4.46
+Werkzeug==2.2.2
+WTForms==3.0.1
+zipp==3.11.0
