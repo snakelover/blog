@@ -4,7 +4,7 @@ from flask import Blueprint, flash, redirect, render_template, request, url_for
 from werkzeug.utils import secure_filename
 
 from app import app, db
-from helpers import object_list
+from helpers import object_list, entry_list, get_entry_or_404
 from models import Entry, Tag
 from entries.forms import EntryForm, ImageForm
 
@@ -108,22 +108,3 @@ def delete(slug):
         return redirect(url_for('entries.index'))
 
     return render_template('entries/delete.html', entry=entry)
-
-
-def entry_list(template, query, **context):
-    valid_statuses = (Entry.STATUS_PUBLIC, Entry.STATUS_DRAFT)
-    query = query.filter(Entry.status.in_(valid_statuses))
-    if request.args.get('q'):
-        search = request.args['q']
-        query = query.filter(
-            (Entry.body.contains(search)) |
-            (Entry.title.contains(search)))
-
-    return object_list(template, query, **context)
-
-
-def get_entry_or_404(slug):
-    valid_statuses = (Entry.STATUS_PUBLIC, Entry.STATUS_DRAFT)
-    return Entry.query.filter(
-            (Entry.slug == slug) &
-            (Entry.status.in_(valid_statuses))).first_or_404()
