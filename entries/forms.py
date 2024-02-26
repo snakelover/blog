@@ -1,11 +1,12 @@
 import wtforms
 from wtforms.validators import DataRequired
+from flask_wtf import FlaskForm
+from flask_wtf.file import FileField, FileRequired, FileAllowed
 from models import Entry, Tag
 
-
-class ImageForm(wtforms.Form):
-    file = wtforms.FileField('Image file')
-
+class ImageForm(FlaskForm):
+    file = FileField(validators=[FileRequired(), FileAllowed(['jpg', 'png', '.gif'])])
+    
 
 class TagField(wtforms.StringField):
     def _value(self):

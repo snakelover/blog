@@ -60,7 +60,7 @@ def create():
 @entries.route('/image-upload/', methods=['GET', 'POST'])
 def image_upload():
     if request.method == 'POST':
-        form = ImageForm(request.form)
+        form = ImageForm()
         if form.validate():
             image_file = request.files['file']
             filename = os.path.join(app.config['IMAGES_DIR'],
