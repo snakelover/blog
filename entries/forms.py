@@ -40,7 +40,7 @@ class TagField(wtforms.StringField):
             self.data = []
 
 
-class EntryForm(wtforms.Form):
+class EntryForm(FlaskForm):
     title = wtforms.StringField(
         'Title',
         validators=[DataRequired()])

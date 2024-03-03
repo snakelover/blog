@@ -44,7 +44,7 @@ def tag_detail(slug):
 @entries.route('/create/', methods=['GET', 'POST'])
 def create():
     if request.method == 'POST':
-        form = EntryForm(request.form)
+        form = EntryForm()
         if form.validate():
             entry = form.save_entry(Entry())
             db.session.add(entry)
