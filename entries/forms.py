@@ -53,6 +53,8 @@ class EntryForm(FlaskForm):
             (Entry.STATUS_PUBLIC, 'Public'),
             (Entry.STATUS_DRAFT, 'Draft')),
         coerce=int)
+    slug = wtforms.StringField(
+        'Slug', render_kw={'readonly': True})
     tags = TagField(
         'Tags',
         description='Separate multiple tags with commas.')
