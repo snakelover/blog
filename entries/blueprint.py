@@ -5,7 +5,7 @@ from werkzeug.utils import secure_filename
 
 from app import app, db
 from helpers import object_list, entry_list, get_entry_or_404
-from models import Entry, Tag
+from models import Entry, Tag, entry_tags
 from entries.forms import EntryForm, ImageForm
 
 entries = Blueprint('entries', __name__, template_folder='templates')
@@ -19,7 +19,7 @@ def index():
 
 @entries.route('/tags/')
 def tag_index():
-    tags = Tag.query.order_by(Tag.name)
+    tags = Tag.query.join(entry_tags).distinct().order_by(Tag.name)
     return entry_list('entries/tag_index.html', tags)
 
 
