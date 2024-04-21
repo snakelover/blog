@@ -4,8 +4,8 @@ from flask import Blueprint, flash, redirect, render_template, request, url_for
 from werkzeug.utils import secure_filename
 
 from app import app, db
-from helpers import object_list, entry_list, get_entry_or_404
-from models import Entry, Tag, entry_tags
+from helpers import object_list, entry_list, get_entry_or_404, get_image_or_404
+from models import Entry, Tag, Image, entry_tags
 from entries.forms import EntryForm, ImageForm
 
 entries = Blueprint('entries', __name__, template_folder='templates')
@@ -57,6 +57,16 @@ def create():
     return render_template('entries/create.html', form=form)
 
 
+@entries.route('/images/')
+def image_index():
+    images = Image.query.order_by(Image.title)
+    return entry_list('entries/image_index.html', images)
+
+@entries.route('/images/<slug>/')
+def image_detail(slug):
+    image = get_image_or_404(slug)
+    return render_template('entries/image_detail.html', image=image)
+
 @entries.route('/image-upload/', methods=['GET', 'POST'])
 def image_upload():
     if request.method == 'POST':
@@ -67,6 +77,9 @@ def image_upload():
                                     secure_filename(image_file.filename))
             image_file.save(filename)
             flash('Saved %s' % os.path.basename(filename), 'success')
+            image = form.save_entry(Image(title=image_file.filename, path=filename))
+            db.session.add(image)
+            db.session.commit()
             return redirect(url_for('entries.index'))
     else:
         form = ImageForm()

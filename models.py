@@ -56,3 +56,21 @@ class Tag(db.Model):
 
     def __repr__(self):
         return '<Tag %s>' % self.name
+
+class Image(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(64))
+    slug = db.Column(db.String(64), unique=True)
+    path = db.Column(db.String(256))
+
+    def __init__(self, *args, **kwargs):
+        super(Image, self).__init__(*args, **kwargs)
+        self.slug = slugify(self.title)
+        
+    def generate_slug(self):
+        self.slug = ''
+        if self.title:
+            self.slug = slugify(self.title)
+
+    def __repr__(self):
+        return '<Image %s>' % self.title

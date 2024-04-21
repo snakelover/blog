@@ -1,5 +1,5 @@
 from flask import render_template, request
-from models import Entry
+from models import Entry, Image
 
 def object_list(template_name, query, paginate_by=20, **context):
     page = request.args.get('page')
@@ -27,3 +27,8 @@ def get_entry_or_404(slug):
     return Entry.query.filter(
             (Entry.slug == slug) &
             (Entry.status.in_(valid_statuses))).first_or_404()
+
+def get_image_or_404(slug):
+    # valid_statuses = (Image.STATUS_PUBLIC, Image.STATUS_DRAFT)
+    return Image.query.filter(
+            (Image.slug == slug)).first_or_404()

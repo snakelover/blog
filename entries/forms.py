@@ -7,6 +7,11 @@ from models import Entry, Tag
 class ImageForm(FlaskForm):
     file = FileField(validators=[FileRequired(), FileAllowed(['jpg', 'png', '.gif'])])
     
+    def save_entry(self, entry):
+        self.populate_obj(entry)
+        entry.generate_slug()
+        return entry
+    
 
 class TagField(wtforms.StringField):
     def _value(self):
