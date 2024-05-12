@@ -1,5 +1,9 @@
-{% extends "entries/base_entries.html" %}
+{% extends "base.html" %}
 
 {% block title %}{{ image.title }}{% endblock %}
 
 {% block content_title %}Image path: {{ image.path }}{% endblock %}
+
+{% block content %}
+  {{ image.body }}
+{% endblock %}
