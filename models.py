@@ -58,9 +58,13 @@ class Tag(db.Model):
         return '<Tag %s>' % self.name
 
 class Image(db.Model):
+    STATUS_PUBLIC = 0
+    STATUS_DELETED = 1
+    
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(64))
     slug = db.Column(db.String(64), unique=True)
+    status = db.Column(db.SmallInteger, default=STATUS_PUBLIC)
     path = db.Column(db.String(256))
 
     def __init__(self, *args, **kwargs):
