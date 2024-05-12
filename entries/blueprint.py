@@ -59,13 +59,27 @@ def create():
 
 @entries.route('/images/')
 def image_index():
-    images = Image.query.order_by(Image.title)
+    images = Image.query.filter(Image.status == Image.STATUS_PUBLIC).order_by(Image.title)
     return entry_list('entries/image_index.html', images)
 
 @entries.route('/images/<slug>/')
 def image_detail(slug):
     image = get_image_or_404(slug)
     return render_template('entries/image_detail.html', image=image)
+
+@entries.route('/images/<slug>/image_delete/', methods=['GET', 'POST'])
+def image_delete(slug):
+    print(slug)
+    image = get_image_or_404(slug)
+    print(image)
+    if request.method == 'POST':
+        image.status = Image.STATUS_DELETED
+        db.session.add(image)
+        db.session.commit()
+        flash('Image "%s" has been deleted.' % image.title, 'success')
+        return redirect(url_for('entries.image_index'))
+
+    return render_template('entries/image_delete.html', image=image)
 
 @entries.route('/image-upload/', methods=['GET', 'POST'])
 def image_upload():

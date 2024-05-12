@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}{{ image.title }}{% endblock %}
+
+{% block content_title %}{{ image.title }}{% endblock %}
+
+{% block content %}
+  <form action="{{ url_for('entries.image_delete', slug=image.slug) }}" method="post">
+    <fieldset>
+      <legend>Delete this image?</legend>
+      <button class="btn btn-danger" type="submit">Delete</button>
+      <a class="btn" href="{{ url_for('entries.image_detail', slug=image.slug) }}">Cancel</a>
+    </fieldset>
+  </form>
+{% endblock %}
