@@ -2,8 +2,9 @@
 
 {% block title %}{{ image.title }}{% endblock %}
 
-{% block content_title %}Image path: {{ image.path }}{% endblock %}
+{% block content_title %}Image title: {{ image.title }}{% endblock %}
 
 {% block content %}
-  {{ image.body }}
+  {{ image.path }}
+  <img src="/static/images/{{ image.title }}" alt="Image">
 {% endblock %}

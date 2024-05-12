@@ -77,7 +77,7 @@ def image_upload():
                                     secure_filename(image_file.filename))
             image_file.save(filename)
             flash('Saved %s' % os.path.basename(filename), 'success')
-            image = form.save_entry(Image(title=image_file.filename, path=filename))
+            image = form.save_entry(Image(title=secure_filename(image_file.filename), path=filename))
             db.session.add(image)
             db.session.commit()
             return redirect(url_for('entries.index'))
