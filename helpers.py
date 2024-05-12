@@ -29,6 +29,7 @@ def get_entry_or_404(slug):
             (Entry.status.in_(valid_statuses))).first_or_404()
 
 def get_image_or_404(slug):
-    # valid_statuses = (Image.STATUS_PUBLIC, Image.STATUS_DRAFT)
+    valid_statuses = (Image.STATUS_PUBLIC,)
     return Image.query.filter(
-            (Image.slug == slug)).first_or_404()
+            (Image.slug == slug) &
+            (Image.status.in_(valid_statuses))).first_or_404()
