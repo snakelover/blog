@@ -5,7 +5,7 @@ from flask_wtf.file import FileField, FileRequired, FileAllowed
 from models import Entry, Tag
 
 class ImageForm(FlaskForm):
-    file = FileField(validators=[FileRequired(), FileAllowed(['jpg', 'png', '.gif'])])
+    file = FileField(validators=[FileRequired(), FileAllowed(['jpg', 'jpeg', 'png', 'gif'])])
     
     def save_entry(self, entry):
         self.populate_obj(entry)
