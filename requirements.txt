@@ -14,3 +14,5 @@ SQLAlchemy==1.4.46
 Werkzeug==2.2.2
 WTForms==3.0.1
 zipp==3.11.0
+Flask-Login==0.6.3
+Flask-Bcrypt==4.0.1
