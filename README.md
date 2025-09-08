@@ -7,6 +7,7 @@ This is a simple blog application built with Flask and WTForms. It supports crea
 - Upload images to entries (supports jpg, jpeg, png, gif)
 - Tag entries with multiple tags (comma-separated)
 - View entries and tags
+- Filter entries by multiple tags (e.g., /tags/python+flask)
 - Database migrations with Alembic
 
 ## Project Structure
