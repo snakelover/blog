@@ -103,7 +103,7 @@ class User(db.Model):
             self.slug = slugify(self.name)
 
     def get_id(self):
-        return unicode(self.id)
+        return str(self.id)
 
     def is_authenticated(self):
         return True

@@ -2,7 +2,7 @@ import os
 
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from werkzeug.utils import secure_filename
-
+from flask_login import login_required
 from app import app, db
 from helpers import object_list, entry_list, get_entry_or_404, get_image_or_404
 from models import Entry, Tag, Image, entry_tags
@@ -42,6 +42,7 @@ def tag_detail(slug):
 
 
 @entries.route('/create/', methods=['GET', 'POST'])
+@login_required
 def create():
     if request.method == 'POST':
         form = EntryForm()
@@ -68,6 +69,7 @@ def image_detail(slug):
     return render_template('entries/image_detail.html', image=image)
 
 @entries.route('/images/<slug>/image_delete/', methods=['GET', 'POST'])
+@login_required
 def image_delete(slug):
     print(slug)
     image = get_image_or_404(slug)
@@ -82,6 +84,7 @@ def image_delete(slug):
     return render_template('entries/image_delete.html', image=image)
 
 @entries.route('/image-upload/', methods=['GET', 'POST'])
+@login_required
 def image_upload():
     if request.method == 'POST':
         form = ImageForm()
@@ -108,6 +111,7 @@ def detail(slug):
 
 
 @entries.route('/<slug>/edit/', methods=['GET', 'POST'])
+@login_required
 def edit(slug):
     entry = get_entry_or_404(slug)
     if request.method == 'POST':
@@ -125,6 +129,7 @@ def edit(slug):
 
 
 @entries.route('/<slug>/delete/', methods=['GET', 'POST'])
+@login_required
 def delete(slug):
     entry = get_entry_or_404(slug)
     if request.method == 'POST':
