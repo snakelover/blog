@@ -1,12 +1,13 @@
 import os
 
-from flask import Blueprint, flash, redirect, render_template, request, url_for
+from flask import Blueprint, flash, redirect, render_template, request, url_for, g
 from werkzeug.utils import secure_filename
 from flask_login import login_required
 from app import app, db
 from helpers import object_list, entry_list, get_entry_or_404, get_image_or_404
 from models import Entry, Tag, Image, entry_tags
 from entries.forms import EntryForm, ImageForm
+
 
 entries = Blueprint('entries', __name__, template_folder='templates')
 
@@ -47,7 +48,7 @@ def create():
     if request.method == 'POST':
         form = EntryForm()
         if form.validate():
-            entry = form.save_entry(Entry())
+            entry = form.save_entry(Entry(author=g.user))
             db.session.add(entry)
             db.session.commit()
             flash('Entry "%s" created successfully.' % entry.title, 'success')
@@ -106,7 +107,7 @@ def image_upload():
 
 @entries.route('/<slug>/')
 def detail(slug):
-    entry = get_entry_or_404(slug)
+    entry = get_entry_or_404(slug, author=None)
     return render_template('entries/detail.html', entry=entry)
 
 

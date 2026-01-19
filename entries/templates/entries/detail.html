@@ -5,17 +5,26 @@
 {% block content_title %}{{ entry.title }}{% endblock %}
 
 {% block sidebar %}
-  <ul class="well nav nav-list">
-    <li><h4>Tags</h4></li>
-    {% for tag in entry.tags|sort(attribute='name') %}
-      <li><a href="{{ url_for('entries.tag_detail', slug=tag.slug) }}">{{ tag.name }}</a></li>
-    {% endfor %}
-  </ul>
-  <p><a href="{{ url_for('entries.edit', slug=entry.slug) }}">Edit</a></p>
-  <p><a href="{{ url_for('entries.delete', slug=entry.slug) }}">Delete</a></p>
-  <p>Published {{ entry.created_timestamp.strftime('%m/%d/%Y') }}</p>
+<ul class="well nav nav-list">
+  <li>
+    <h4>Tags</h4>
+  </li>
+  {% for tag in entry.tags|sort(attribute='name') %}
+  <li><a href="{{ url_for('entries.tag_detail', slug=tag.slug) }}">{{ tag.name }}</a></li>
+  {% endfor %}
+</ul>
+{% if g.user == entry.author %}
+<li>
+  <h4>Actions</h4>
+</li>
+<li><a href="{{ url_for('entries.edit', slug=entry.slug)
+}}">Edit</a></li>
+<li><a href="{{ url_for('entries.delete', slug=entry.slug)
+}}">Delete</a></li>
+{% endif %}
+<p>Published {{ entry.created_timestamp.strftime('%m/%d/%Y') }}</p>
 {% endblock %}
 
 {% block content %}
-  {{ entry.body }}
+{{ entry.body }}
 {% endblock %}
